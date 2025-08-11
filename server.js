@@ -7,6 +7,7 @@ import enquiryRoutes from "./routes/enquire.routes.js";
 import locationRoutes from "./routes/location.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import listRoutes from "./routes/list.routes.js";
+import propertyRoutes from "./routes/property.routes.js";
 const app = express();
 
 dotenv.config();
@@ -18,6 +19,7 @@ app.use("/api/enquiry", enquiryRoutes);
 app.use("/api/location",locationRoutes);
 app.use("/api/user",userRoutes);
 app.use("/api/list",listRoutes);
+app.use("/api/property",propertyRoutes);
 
 ConnectDB();
 app.listen(process.env.PORT,(error)=>{
