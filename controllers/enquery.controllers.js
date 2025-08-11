@@ -33,6 +33,7 @@ export const GetEnqurey = async (req, res) => {
 export const DeleteEnqurey = async (req, res) => {
   try {
     const { phone } = req.body;
+    console.log(phone);
     if (!phone) {
       return res.status(400).json({ error: "Phone no is required" });
     }
