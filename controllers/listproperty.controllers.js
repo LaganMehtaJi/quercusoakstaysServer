@@ -4,7 +4,7 @@ import * as enquerymodel from "../models/user.controller.js";
 export const addProperty = async (req, res) => {
   try {
     const { name, email , phone ,size , propertyname, location, propertytype } = req.body;
-    if (!name || !email || !phone || !size || !propertyname || !location || !propertytype) {
+    if (!name || !email || !phone || !size || !propertyname || !location ) {
       return res.status(400).json({ error: "All fields are required" });
     }
     const newProperty = await enquerymodel.Listproperty.create({
@@ -14,9 +14,8 @@ export const addProperty = async (req, res) => {
       size: size,
       propertyname: propertyname,
       location: location,
-      propertytype: propertytype
     });
-    res.status(201).json({ "message": "Success", "response": newProperty });
+    res.status(201).json({ "success": "Success", "response": newProperty });
   } catch (error) {
     console.error("Error adding property:", error);
     res.status(500).json({ error: "Internal server error" });
