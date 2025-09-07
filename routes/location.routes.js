@@ -1,9 +1,10 @@
 import express from "express";
-const router = express.Router();
-import { addLocation, getLocation, deleteLocation } from "../controllers/location.controllers.js";  
-// Route to add a new location
-router.post("/add", addLocation);
-router.get("/get", getLocation);
-router.post("/delete", deleteLocation);
+import upload from "../utils/multerConfig.js";
+import * as LocationController from "../controllers/location.controllers.js";
 
+const router = express.Router();
+
+router.post("/locations/add", upload.single("image"), LocationController.AddLocation);
+router.get("/locations/get", LocationController.GetAllLocations);
+router.delete("/locations/delete/:name", LocationController.DeleteLocation);
 export default router;

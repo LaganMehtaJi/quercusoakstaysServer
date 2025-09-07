@@ -1,49 +1,69 @@
-import express from "express";
-import * as enqueryModael from "../models/user.controller.js";
-export const addLocation = async (req, res) => {
+import locationModel from "../models/locations.models.js";
+import cloudinary from "../utils/cloudinary.js";
+
+export const AddLocation = async (req, res) => {
   try {
-    const {  name,tagline,imageUrl} = req.body;
-    console.log("Received location:", name, tagline, imageUrl);
-    if (!name || !tagline || !imageUrl) {
-      return res.status(400).json({ error: "Detail is required" });
+    const { name } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ message: "Name is required" });
     }
-    const newLocation = await enqueryModael.Location.create({
-      name:name,
-       tagline:tagline,
-      imageUrl:imageUrl
+
+    if (!req.file) {
+      return res.status(400).json({ message: "Image file is required" });
+    }
+
+    // Upload image to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "locations", // Cloudinary folder name
     });
-    res.status(201).json({ "message": "Success", "response": newLocation });
+
+    const newLocation = new locationModel({
+      name,
+      imageUrl: result.secure_url, // Save Cloudinary URL
+    });
+
+    await newLocation.save();
+
+    res.status(201).json({
+      message: "Location Added Successfully",
+      location: newLocation,
+    });
   } catch (error) {
-    console.error("Error adding location:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
   }
-}
+};
 
-export const getLocation = async (req, res) => {
 
-    try {
-        const locations = await enqueryModael.Location.find({});
-        res.status(200).json({ "message": "Success", "response": locations });
-    } catch (error) {
-        console.error("Error fetching locations:", error);
-        res.status(500).json({ error: "Internal server error" });
+export const GetAllLocations = async (req, res) => {
+  try {
+    const locations = await locationModel.find({});
+    if (locations.length === 0) {
+      return res.status(404).json({ message: "No locations found" });
     }
-    };
+    res.status(200).json({ locations });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  } 
+};
 
-export const deleteLocation = async (req, res) => {    
-
-    try {
-        const { name } = req.body;
-        if (!name) {
-        return res.status(400).json({ error: "Name is required" });
-        }
-        const deletedLocation = await enqueryModael.Location.deleteOne({ name: name });
-        if (!deletedLocation) {
-        return res.status(404).json({ error: "Location not found" });
-        }
-        res.status(200).json({ "message": "Success", "response": deletedLocation });
-    } catch (error) {
-        console.error("Error deleting location:", error);
-        res.status(500).json({ error: "Internal server error" });
+export const DeleteLocation = async (req, res) => {
+  try {
+    const { name } = req.params;
+    if(!name){
+      return res.status(400).json({ message: "Name is required" });
     }
-    };
+    const location = await locationModel.findOne({name});
+    if (!location) {
+      return res.status(404).json({ message: "Location not found" });
+    }       
+    await locationModel.deleteOne({ name });
+    res.status(200).json({ message: "Location deleted successfully" });
+  } 
+    catch (error) {         
+    console.log(error);                     
+    res.status(500).json({ message: "Server Error" });                          
+    }                               
+};
