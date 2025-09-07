@@ -7,6 +7,7 @@ import offerRoutes from "./routes/offer.routes.js";
 import locationRoutes from "./routes/location.routes.js";
 import  PropertyRoutes  from "./routes/property.routes.js";
 import addUserRoutes from "./routes/add.routes.js";
+import bookingNowRoutes from "./routes/booking.routes.js";
 const app = express();
 
 dotenv.config();
@@ -18,6 +19,8 @@ app.use("/api/offer",offerRoutes);
 app.use("/api",locationRoutes);
 app.use("/api/property",PropertyRoutes);
 app.use("/api/phone",addUserRoutes);
+app.use("/api/book",bookingNowRoutes);
+
 ConnectDB();
 app.listen(process.env.PORT,(error)=>{
     if(error){
