@@ -8,7 +8,7 @@ export const AddPhone = async (req, res) => {
         }
         const newPhone = new addModel({ phone });
         await newPhone.save();
-        res.status(201).json({ message: "Phone number added successfully", phone: newPhone });
+        res.status(200).json({ success: "Phone number added successfully", phone: newPhone });
     }   
     catch (error) {
         console.error(error);
