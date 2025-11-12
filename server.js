@@ -21,7 +21,7 @@ app.use("/api",locationRoutes);
 app.use("/api",ImagesRoutes);
 app.use("/api/property",PropertyRoutes);
 app.use("/api/phone",addUserRoutes);
-app.use("/api/book",bookingNowRoutes);
+
 
 ConnectDB();
 app.listen(process.env.PORT,(error)=>{
