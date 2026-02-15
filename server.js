@@ -3,31 +3,51 @@ import ConnectDB from "./config/db.js";
 import cors from "cors";
 import morgan from "morgan";
 import dotenv from "dotenv";
-import offerRoutes from "./routes/offer.routes.js";
-import locationRoutes from "./routes/location.routes.js";
-import ImagesRoutes from "./routes/AddImages.routes.js";
-import  PropertyRoutes  from "./routes/property.routes.js";
-import addUserRoutes from "./routes/add.routes.js";
-import bookingNowRoutes from "./routes/booking.routes.js";
+
+// Routes
+import offerRoutes from "./routes/Offer.routes.js";
+import locationRoutes from "./routes/location.routes.js";   // SAME
+import ImagesRoutes from "./routes/AddImages.routes.js";    // SAME
+import productRoutes from "./routes/Product.routes.js";
+import queryRoutes from "./routes/Query.routes.js";
+import orderRoutes from "./routes/Order.routes.js";
+
 const app = express();
 
 dotenv.config();
+
+// Middlewares
 app.use(cors());
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/api/offer",offerRoutes);
-app.use("/api",locationRoutes);
-app.use("/api",ImagesRoutes);
-app.use("/api/property",PropertyRoutes);
-app.use("/api/phone",addUserRoutes);
 
+// ============================
+// API Routes
+// ============================
+
+app.use("/api/offers", offerRoutes);
+
+app.use("/api", locationRoutes);        // SAME
+app.use("/api", ImagesRoutes);          // SAME
+
+app.use("/api/products", productRoutes);
+
+app.use("/api/queries", queryRoutes);
+
+app.use("/api/orders", orderRoutes);
+
+// ============================
+// Connect DB & Start Server
+// ============================
 
 ConnectDB();
-app.listen(process.env.PORT,(error)=>{
-    if(error){
-     console.log(`Error : ${error}`);
-    }else{
-    console.log(`Server Listen Port no : ${process.env.PORT}`);
-    }
+
+app.listen(process.env.PORT, (error) => {
+  if (error) {
+    console.log(`Error: ${error}`);
+  } else {
+    console.log(`Server running on port ${process.env.PORT} 🚀`);
+  }
 });
+``
