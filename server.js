@@ -5,7 +5,6 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 
 // Routes
-import offerRoutes from "./routes/Offer.routes.js";
 import locationRoutes from "./routes/location.routes.js";   // SAME
 import ImagesRoutes from "./routes/AddImages.routes.js";    // SAME
 import productRoutes from "./routes/Product.routes.js";
@@ -26,7 +25,6 @@ app.use(express.urlencoded({ extended: true }));
 // API Routes
 // ============================
 
-app.use("/api/offers", offerRoutes);
 
 app.use("/api", locationRoutes);        // SAME
 app.use("/api", ImagesRoutes);          // SAME
