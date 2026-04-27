@@ -22,6 +22,12 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: [
+        "Electronics",
+        "Fashion",
+        "Home",
+        "Sports",
+        "Books",
+        "Beauty",
         "Paper Cups",
         "Paper Plates",
         "Bowls",
@@ -29,6 +35,7 @@ const productSchema = new mongoose.Schema(
         "Food Containers",
         "Cutlery",
         "Packaging Supplies",
+        "Others"
       ],
       index: true, // filtering by category
     },

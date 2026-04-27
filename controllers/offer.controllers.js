@@ -122,9 +122,48 @@ export const deleteOffer = async (req, res) => {
       return res.status(404).json({ message: "Offer not found" });
     }
 
-    await Offer.deleteOne({ code: code.toUpperCase() });
-
     res.status(200).json({ message: "Offer deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+// ===============================
+// Validate Offer (Coupon)
+// ===============================
+export const validateOffer = async (req, res) => {
+  try {
+    const { code, orderAmount } = req.body;
+
+    const offer = await Offer.findOne({ 
+      code: code.toUpperCase(),
+      isActive: true,
+      expiryDate: { $gt: new Date() }
+    });
+
+    if (!offer) {
+      return res.status(404).json({ message: "Invalid or expired coupon code" });
+    }
+
+    if (offer.usedCount >= offer.usageLimit) {
+      return res.status(400).json({ message: "Coupon usage limit reached" });
+    }
+
+    if (orderAmount < offer.minimumOrderAmount) {
+      return res.status(400).json({ 
+        message: `Minimum order amount of ₹${offer.minimumOrderAmount} required for this coupon` 
+      });
+    }
+
+    res.status(200).json({
+      message: "Coupon applied successfully ✅",
+      offer: {
+        code: offer.code,
+        discountPercentage: offer.discountPercentage,
+        maxDiscountAmount: offer.maxDiscountAmount
+      }
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server Error" });

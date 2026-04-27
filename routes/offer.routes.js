@@ -18,4 +18,7 @@ router.put("/update/:code", offerController.updateOffer);
 // Delete Offer (Admin)
 router.delete("/delete/:code", offerController.deleteOffer);
 
+// Validate Coupon
+router.post("/validate", offerController.validateOffer);
+
 export default router;

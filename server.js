@@ -5,11 +5,11 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 
 // Routes
-import locationRoutes from "./routes/location.routes.js";   // SAME
-import ImagesRoutes from "./routes/AddImages.routes.js";    // SAME
 import productRoutes from "./routes/Product.routes.js";
 import queryRoutes from "./routes/Query.routes.js";
 import orderRoutes from "./routes/Order.routes.js";
+import offerRoutes from "./routes/offer.routes.js";
+import seedRoutes from "./routes/Seed.routes.js";
 
 const app = express();
 
@@ -25,15 +25,11 @@ app.use(express.urlencoded({ extended: true }));
 // API Routes
 // ============================
 
-
-app.use("/api", locationRoutes);        // SAME
-app.use("/api", ImagesRoutes);          // SAME
-
 app.use("/api/products", productRoutes);
-
 app.use("/api/queries", queryRoutes);
-
 app.use("/api/orders", orderRoutes);
+app.use("/api/offers", offerRoutes);
+app.use("/api", seedRoutes);
 
 // ============================
 // Connect DB & Start Server
